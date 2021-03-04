@@ -1,0 +1,43 @@
+
+.projects {
+    text-align: center;
+    position: relative;
+}
+
+.projects h2 {
+    font-size: 2rem;
+}
+
+.projects-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 5em;
+}
+
+.projects-item {
+    margin: 0em 2em;
+}
+
+.projects-item img {
+}
+
+
+
+@media only screen and (max-width: 1300px) {
+    .projects-list {
+        display: grid;
+        grid-template-columns: unset;
+    }
+
+    .projects-item {
+        margin: 0em 2em;
+    }
+
+    .projects-item h3 {
+        font-size: 2rem;
+    }
+
+    .projects-item img {
+        width: 50%;
+    }
+}

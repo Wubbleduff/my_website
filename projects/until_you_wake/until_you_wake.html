@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Michael Fritz">
+    <meta name="description" content="Portfolio website for Michael Fritz">
+    <title>Michael Fritz - Until You Wake</title>
+    <link rel="stylesheet" href="/style_common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="grid">
+
+<header class="header">
+    <div>
+    </div>
+
+    <div class="name">
+        <a href="/index.html"><h1>Michael Fritz</h1><h2>Software Engineer</h2></a>
+    </div>
+
+    <div class="nav">
+        <ul>
+            <a href="/index.html" class="nav-leftmost"><li >Home</li></a>
+            <a href="/projects.html"><li>Projects</li></a>
+            <a href="/resume.html"><li>Resume</li></a>
+            <a href="/contact.html"><li>Contact</li></a>
+        </ul>
+    </div>
+</header>
+<hr>
+
+
+
+
+
+<div class="description">
+    <img id="game_title_image" src="until_you_wake_banner.jpg">
+    <h1 id="game_title">Until You Wake</h1>
+
+    <h2>The Game</h2>
+    <p>Until You Wake is a 3D 3rd-person action shooter game where the player plays a sentinel guarding their temple from enemies. The goddess has awoken the sentinel to take back the stolen sword from the demons. Using their bow and a bit of magic, the player will fight through hordes of crawlers and wisps, and finally defeat the leader of the demons!</p>
+    <h2>The Team</h2>
+    <p>This game was developed by 15 people in total. There were 6 artists, 4 programmers, 4 designers, and 1 audio designer. </p>
+    <h2>Development</h2>
+    <p>Until You Wake was developed using Unity. This was my first time working with a team using a commercial game engine.</p>
+    <h1>My Works</h1>
+    <h2>Mesh Breaking</h2>
+    <p>Since the team was using Unity, I wanted to challenge myself and work on a complex system. And, considering my interest in graphics and physics programming, the team came up with the idea to add a system to dynamically break models in the world. The goal was to have the ability to break or shatter any mesh when shot or thrown. This would allow for interesting gameplay scenarios such as breaking enemy cover, breaking through walls, or just having fun throwing breakable objects.</p>
+    <h3>Research</h3>
+    <p>The first step was to do research on how this could be implemented. Most of my findings indicated objects can be broken by deleteing the object and spawning fake debris in its place. We decided not to do this because it would put more load on the artists, and I wanted to try a suggestion an artist gave. Dylan King suggested I look into Voronoi shattering to break each object. It seemed to be exactly what we wanted, so I gathered references and articles:</p>
+    <ul>
+        <li><a href="https://en.wikipedia.org/wiki/Delaunay_triangulation" target="_blank">https://en.wikipedia.org/wiki/Delaunay_triangulation</a></li>
+        <li><a href="https://github.com/Bl4ckb0ne/delaunay-triangulation" target="_blank">https://github.com/Bl4ckb0ne/delaunay-triangulation</a></li>
+        <li><a href="https://github.com/OskarSigvardsson/unity-delaunay" target="_blank">https://github.com/OskarSigvardsson/unity-delaunay</a></li>
+        <li><a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/12/Efficient-Computation-of-Clipped-Voronoi-Diagram-and-Applications.pdf" target="_blank">https://www.microsoft.com/en-us/research/wp-content/uploads/2016/12/Efficient-Computation-of-Clipped-Voronoi-Diagram-and-Applications.pdf</a></li>
+        <li><a href="http://www.gdmc.nl/publications/2007/Computing_3D_Voronoi_Diagram.pdf" target="_blank">http://www.gdmc.nl/publications/2007/Computing_3D_Voronoi_Diagram.pdf</a></li>
+    </ul>
+    <h3>The Algorithm</h3>
+    <p>The research suggested to use the Voronoi diagram to generate chunks of the object. In 2D, you can overlay the diagram on an object and break it along the edges. The Voronoi cells become the object's shards. So, the steps to break an object in 2D are as follows:</p>
+    <ul>
+        <li>Generate "sites" and overlay them on the 2D object</li>
+        <li>Compute the Voronoi Diagram to match those sites</li>
+        <li>Clip the Voronoi Diagram to the object's boundaries</li>
+        <li>Use the Voronoi cells to generate the object chunks</li>
+        <li>Remove the original object and spawn the chunks in its place</li>
+    </ul>
+    <p>Generating the sites is how you control the object's shattering. The sites generated will be the "center" of the object's shards. You can generate the sites randomly, uniformly, using a normal distribution, raycasting, or however you'd like. Each method gives a different effect.</p>
+    <img src="algorithm_sites.png">
+    <p>Computing the Voronoi Diagram given the sites is the most difficult part. There are multiple ways of achieving this including: using a discretized method, <a href="https://en.wikipedia.org/wiki/Fortune%27s_algorithm" target="_blank">Fortune's Algorithm</a>, or using the <a href="https://en.wikipedia.org/wiki/Delaunay_triangulation" target="_blank">Delaunay Triangulation</a>. Using a discretized method would be difficult because we weren't working with voxels. Fortune's Algorithm would also be difficult because it involves computing intersections of parabolas. I didn't find any research done on this in 3D. So, I ended up choosing the Delaunay Triangulation as previous research has done. Extracting the Voronoi Diagram from the Delaunay Triangulation is as follows:</p>
+    <ul>
+        <li>Get a list of points to triangulate (these will be the previously generated "sites")</li>
+        <li>Triangulate them (create a Delaunay Triangulation) using the <a href="https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm" target="_blank">Bowyer-Watson Algorithm</a></li>
+        <li>Generate Voronoi vertices using the triangle's circumcircle's centers</li>
+        <li>Create a graph connecting the Voronoi vertices using the one-ring-neighborhood of each site</li>
+    </ul>
+    <img src="algorithm_delaunay.png">
+    <img src="algorithm_voronoi.png">
+    <p>And that's all there is to computing a Voronoi Diagram extracted from a Delaunay Triangulation generated using the Bowyer-Watson Algorithm! Simple, right? Ya, I didn't know what I was getting myself into...</p>
+    <p>Continuing on with the algorithm, we still need to clip the Voronoi Diagram to the boundaries of the mesh. This clipping is very similar to how clipping is done when rendering (see my <a href="" target="_blank">Software Renderer</a> project). This could even work with concave objects by just walking the boundary of the object when clipping a Voronoi cell. Though, we never got to that point.</p>
+    <img src="algorithm_clipped_voronoi.png">
+    <p>Generating the object's chunks is a trivial part of the algorithm. Since each Voronoi Cell is by definition convex, you can generate a mesh for each chunk using a triangle-fan method.</p>
+    <p>Now that we have all the chunks, it's time to create game objects out of them and simulate them!</p>
+    <img src="algorithm_shatter_animated.gif">
+    <h3>Extending to 3D</h3>
+    <p>This process was chosen because the Delaunay Triangulation and Voronoi Diagram work on N-dimensional points. So, in theory, it should easily extend to 3D. Of course, it's a bit more complicated than that in practice. Unfortunately, the Bowyer-Watson algorithm has issues with floating point precision as outlined <a href="https://github.com/OskarSigvardsson/unity-delaunay#user-content-bowyer-watson" target="_blank">here</a> that didn't show up in 2D. Not only this, but clipping becomes more difficult with arbitrary meshes. Unfortunately, since it was taking so much time, this system never made it into the game. I decided to halt development of this system and contribute to other areas of the game.</p>
+    <h2>The Force</h2>
+    <p>In Until You Wake, the character is able to use magic to throw objects using "the force." This adds multiple dimensions in gameplay such as using objects to damage enemies, pulling over bookcases, unlocking far-away doors with keys, etc. The player would interact with each object the same, but how objects react would be different. In order to make this easy to program for, I created an interface for objects to be "auto-targeted." Each force-able object would implement this interface and automatically gain the ability to be targeted. For example - when targeted: a small object would be launched, a bookcase would fall over, and a key would lerp toward a lock. But, they would all be targeted and activated the same.</p>
+    <p>When the player wants to target a force object, they would look towards the object and press F. The targeting only selected objects within some range and dot product threshold. The final object targeted would be the one with the highest dot product. This made targeting any force object easy, efficient, and intuitive for the player.</p>
+    <h2>Camera Work</h2>
+    <p>Since Until You Wake was a 3rd person game, much more work had to be put into the camera to make it "feel good." A lot of games will put the camera's pivot just above the player's head. But, we wanted our character to take up the left 1/3 of the screen. This meant the camera had to be offset. My first attempt was to orbit on a sphere. However, aiming up and down became difficult because of the sphere's shape and a gimbal lock effect. I had to do a few passes before I realized the camera should orbit on a cylinder. Looking horizontally would rotate the cylinder about the player. Looking vertically would move the camera along the cylinder's curved surface. The camera can move closer or further from the player by moving along the cylinder's axis.</p>
+    <p>Another issue to solve is the camera clipping into level geometry. A sphere-swept shape had to be checked when positioning the camera so it will move closer to the player when colliding with a wall. This can be quite jarring, though. A solution to this would be to detect the camera is close to a wall and begin lerping toward the player before colliding with the wall.</p>
+    <h2>Boss AI</h2>
+    <p>The final boss was the most complex AI in the game. As a first pass, I decided to implement a state-machine AI system. This made it easier to program different states and transitions for each boss behavior. Also, it made working with Unity's animation system easier and more explicit.</p>
+</div>
+
+
+
+
+<hr>
+
+<footer class="footer">
+<div>
+    <ul>
+        <li><a href="https://www.github.com/Wubbleduff" target="_blank"><img src="/github_icon.png">GitHub</a>
+            </li>
+        <li><a href="https://www.linkedin.com/in/michaelscottfritz/" target="_blank"><img src="/linkedin_icon.png">LinkedIn</a></li>
+        <li><a href="https://twitter.com/Wubbleduff" target="_blank"><img src="/twitter_icon.png">Twitter</a></li>
+    </ul>
+</div>
+</footer>
+
+
+</div> <!-- class="grid" -->
+</body>
+
+
+
+</html>
+

@@ -1,0 +1,24 @@
+
+#resume {
+    width: 50%;
+    height: 75em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+}
+
+.resume h1 {
+    text-align: center;
+    font-size: 2rem;
+}
+
+
+@media only screen and (max-width: 1300px) {
+    #resume {
+        width: 90%;
+        height: 75em;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1em;
+    }
+}

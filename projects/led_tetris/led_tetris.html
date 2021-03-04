@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Michael Fritz">
+    <meta name="description" content="Portfolio website for Michael Fritz">
+    <title>Michael Fritz - LED Tetris</title>
+    <link rel="stylesheet" href="/style_common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="grid">
+
+<header class="header">
+    <div>
+    </div>
+
+    <div class="name">
+        <a href="/index.html"><h1>Michael Fritz</h1><h2>Software Engineer</h2></a>
+    </div>
+
+    <div class="nav">
+        <ul>
+            <a href="/index.html" class="nav-leftmost"><li >Home</li></a>
+            <a href="/projects.html"><li>Projects</li></a>
+            <a href="/resume.html"><li>Resume</li></a>
+            <a href="/contact.html"><li>Contact</li></a>
+        </ul>
+    </div>
+</header>
+<hr>
+
+
+
+<div class="description">
+    <img src="led_tetris.png" id="subject-image">
+    <h1>LED Tetris</h1>
+    <h2>The Game</h2>
+    <p>As practice for programming, I decided to create a simple Tetris game. My goal was to code the game as simply and as straightforward as possible. From there, I would be able to adapt the project and practice programming in other areas such as networking.</p>
+    <p>For the game, I wanted to make it as simple as possible and as few libraries as I could. So, I began by setting up a framework to render a grid on a window. After only a few hours, I was able to render Tetris pieces, stack them, and clear filled rows.</p>
+    <img src="prototype.png">
+    <p>A unexpected few issues popped up along the way:</p>
+    <p>It took a bit to figure out how render the grid evenly in a divided screen. The three columns of the game (left holding piece bar, middle game bar, and right future pieces bar) should each be grids and render consistently. I made it easy to render pieces into any grid and it will look the same.</p>
+    <p>I had to do research on the exact mechanics of Tetris in order to get pieces and clearing to behave correctly. For example: Once filled rows are detected, you need to clear those filled rows top-down to deal with the case of any 1-4 filled rows.</p>
+    <p>Once the Tetris game was finally playable, it was time do deal with rotating pieces properly. Up until this point, I would not allow you to rotate a piece if it would end in an invalid position. In real Tetris games, the piece will try to resolve to a valid position. This allows for interesting plays such as T-spins. After doing research on how this is normally done, I discovered that there's a standard ruleset for resolving the collisions (lucky me!). Implementation for the collision resolution goes as follows:
+    <ol>
+        <li>On startup, create lookup tables (kick tables) for the pieces and offsets to try for valid positions.</li>
+        <li>When playing and a piece tries to rotate about its pivot, check if it will rotate into a valid position (not hitting other filled blocks).</li>
+        <ul>
+            <li>If it's a valid rotation, place the piece and be done.</li>
+            <li>Otherwise, iterate through lookup table of resolution tests (kicks) for the appropriate piece and rotation. All pieces have the same kick table except I and O pieces (they will have their own tables). Given the piece and rotation, choose the correct "kick" list. For example, if a T piece wants to rotate left, choose the 4th row in the "default_offset_data" table (see image below).</li>
+                <li>For each entry in the chosen row, "kick" the rotated piece (move it by the offset value) and check if that's a valid position. If no valid position is found from any kick, do not allow the rotation to occur.</li>
+        </ul>
+    </ol>
+    <p>Here's what the a kick lookup table looks like</p>
+    <img src="kick_table.png">
+    <p>Not only is this easy to understand, it's very efficient! At most, each collision check is 1 lookup and 5 kick tests. Now, my game plays as every other Tetris game and is tournament ready!
+    <h2>Extending to LEDs</h2>
+    <p>As a happy coincidence, I was taking my <a href="https://www.digipen.edu/academics/current-courses#CS261" target="_blank">second networking class</a> at the same time I was working on this project. This, combined with my interest in LEDs, inspired me to try and display the game on an LED grid.</p>
+    <p>My first task was to drive an LED grid using my Raspberry Pi. This was made easy enough using an <a href="https://github.com/jgarff/rpi_ws281x" target="_blank">existing codebase</a> to drive the LEDs themselves. All I had to do was fill an integer array and send it to the driver. Since the Tetris game was architected simply and only used one library, it was trivial to port it to a Raspberry Pi. In no time, I adapted the renderer to just fill in integers on the grid and display that each frame. Here's the first-pass result:</p>
+    <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Ported my Tetris game to a raspberry pi and hooked it up to my LED grid. <a href="https://t.co/5jcOHQZ0Os">pic.twitter.com/5jcOHQZ0Os</a></p>&mdash; Michael Fritz (@Wubbleduff) <a href="https://twitter.com/Wubbleduff/status/1203920415325741057?ref_src=twsrc%5Etfw">December 9, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <p>Here's where my networking class comes in: Once I could render whatever integer array I wanted, I just pulled integers from a receiving socket and displayed those. Then, my desktop could render the Tetris game to the window and a sending socket. After a bit of tweaking, it seemed to work as expected! The only issue was that it seemed to be very laggy. I thought this was just the nature of it being networked. But, after looking into it further, I was just overloading the networking system by sending packets too quickly. After restricting the stream to 30 packets per second, it was very responsive. Now, the Tetris game can be played on both my PC and the LED grid!</p>
+    <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Streaming the game to the raspberry pi so I can play from any computer. Putting my network class to good use. :) <a href="https://t.co/5QXp31SYq2">pic.twitter.com/5QXp31SYq2</a></p>&mdash; Michael Fritz (@Wubbleduff) <a href="https://twitter.com/Wubbleduff/status/1206377005739962370?ref_src=twsrc%5Etfw">December 16, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <h2>Further Work</h2>
+    <p>At this point, I was satisfied with the result and decided to move on to other projects. If I had more time, I would love to extend the game to multiple LED grids and mount these on my wall. And, since the Raspberry Pi just reads integers from a socket, you could stream all sorts of arcade-like games or anything else! It would be really cool to see other things like Snake, particle systems, or maybe even fluid simulations!</p>
+</div>
+<hr>
+
+
+
+
+<footer class="footer">
+<div>
+    <ul>
+        <li><a href="https://www.github.com/Wubbleduff" target="_blank"><img src="/github_icon.png">GitHub</a>
+            </li>
+        <li><a href="https://www.linkedin.com/in/michaelscottfritz/" target="_blank"><img src="/linkedin_icon.png">LinkedIn</a></li>
+        <li><a href="https://twitter.com/Wubbleduff" target="_blank"><img src="/twitter_icon.png">Twitter</a></li>
+    </ul>
+</div>
+</footer>
+
+
+</div> <!-- class="grid" -->
+</body>
+
+
+
+</html>
+

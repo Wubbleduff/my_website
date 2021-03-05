@@ -1,0 +1,30 @@
+
+#banner {
+    display: block;
+    margin: 1em auto 1em auto;
+}
+
+#game_title {
+    text-align: center;
+}
+
+iframe {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.description img {
+    width: 1000px;
+}
+
+.description h2 {
+    font-size: 2rem;
+    margin-top: 2em;
+    margin-bottom: 0.25em;
+}
+
+.description h1 {
+    font-size: 3rem;
+}
+

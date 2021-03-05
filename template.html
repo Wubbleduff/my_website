@@ -12,29 +12,14 @@
     <link rel="stylesheet" href="/style_common.css">
     <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
+<script src="/jquery-3.6.0.min.js"></script> 
 
 <body>
 
 <div class="grid">
 
-<header class="header">
-    <div>
-    </div>
-
-    <div class="name">
-        <a href="/index.html"><h1>Michael Fritz</h1><h2>Software Engineer</h2></a>
-    </div>
-
-    <div class="nav">
-        <ul>
-            <a href="/index.html" class="nav-leftmost"><li >Home</li></a>
-            <a href="/projects.html"><li>Projects</li></a>
-            <a href="/resume.html"><li>Resume</li></a>
-            <a href="/contact.html"><li>Contact</li></a>
-        </ul>
-    </div>
-</header>
-<hr>
+<script> $(function(){ $("#common_header").load("/common_header.html"); }); </script>
+<div id="common_header"></div>
 
 
 
@@ -44,17 +29,8 @@
 
 
 
-
-<footer class="footer">
-<div>
-    <ul>
-        <li><a href="https://www.github.com/Wubbleduff" target="_blank"><img src="/github_icon.png">GitHub</a>
-            </li>
-        <li><a href="https://www.linkedin.com/in/michaelscottfritz/" target="_blank"><img src="/linkedin_icon.png">LinkedIn</a></li>
-        <li><a href="https://twitter.com/Wubbleduff" target="_blank"><img src="/twitter_icon.png">Twitter</a></li>
-    </ul>
-</div>
-</footer>
+<script> $(function(){ $("#common_footer").load("/common_footer.html"); }); </script>
+<div id="common_footer"></div>
 
 
 </div> <!-- class="grid" -->

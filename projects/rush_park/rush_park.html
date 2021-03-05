@@ -11,27 +11,63 @@
     <meta name="description" content="Portfolio website for Michael Fritz">
     <title>Michael Fritz</title>
     <link rel="stylesheet" href="/style_common.css">
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <script src="/jquery-3.6.0.min.js"></script> 
 
 <body>
 
 <div class="grid">
 
-<script> 
-    $(function(){
-      $("#common_header").load("/common_header.html"); 
-    });
-</script>
-<div id="common_header">
+<script> $(function(){ $("#common_header").load("/common_header.html"); }); </script>
+<div id="common_header"></div>
+
+
+
+<div class="description">
+    <img id="banner" src="rush_park_banner.png">
+    <h1 id="game_title">Rush Park</h1>
+
+    <h2>The Game</h2>
+    <p>Rush park is a 2D, high-speed, 2v2 sports game. Players pick a character and try to hit a ball into the enemy team's goal. The catch? Each time you hit the ball, it goes faster - with no speed limit! Use your character's ability and teamwork to build speed, score goals, and reach the end level!</p>
+    <h2>The Team</h2>
+    <p>"Enoom" was a team of 11 people. There were 5 programmers, 3 designers, and 3 artists.</p>
+    <h2>Development</h2>
+    <p>Rush Park was built with a custom engine written in C/C++ using OpenGL 3 and FMOD.</p>
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/SF6bV5I7Qpg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <h1>My Works</h1>
+    <h2>Engine Architecture</h2>
+    <h3>ECS</h3>
+    <p>Rush Park's engine is built on top of an <a href="https://en.wikipedia.org/wiki/Entity_component_system" target="_blank">entity component system (ECS)</a> architecture. Everything that shows up in the level is an entity with attached components to affect the entity's behavior. Engine systems grab lists of components and update the state of each component (it doesn't care what entity it's attached to). ECS is a desireable architecture for games because it provides great flexibility and potential for efficiency when building complex systems. Also, entities and components can be completely data driven. This set up the engine nicely for when I built a powerful editor for designers and artists.</p>
+    <h3>My Thoughts</h3>
+    <p>In my opinion, implementing an ECS architecture is a good idea when building a game - especially with a larger team or larger game. There are some downfalls, though. Towards the beginning of game development (and especially with a lack of experience), you don't really know what functionality the game needs yet. Therefore, it's hard to determine what systems and components the game should have. It's very easy to create too specific or too general components. Too specific: the game becomes too narrow and designers can't easily change the game or add features. Too general: the engine quickly becomes complex and unwieldy. Deciding if the pros outweigh the cons would change depending on your team. Our team bounced from "too specific" to "too general." Though, it was a great learning experience. Here's a great talk showing what can be done with ECS: <a href="https://www.youtube.com/watch?v=W3aieHjyNvw&list=PLlk-t7FPB0iknRp1RoMLy_zGT_lLIfzve&index=5" target="_blank">"Overwatch Gameplay Architecture and Netcode"</a></p>
+    <h2>Physics</h2>
+    <p>Rush Park's physics was a critical component of gameplay. Since the ball could travel at arbitrary speed, <a href="https://ianqvist.blogspot.com/2010/10/what-is-tunneling.html" target="_blank">tunneling</a> immediately became an issue. The ball would travel through walls and corners and behave unpredictably. I had to do a significant amount of research to figure out how to solve this including talking to professors/TAs, reading articles, and watching videos. This is a particularly heplful video: <a href="https://youtu.be/_g8DLrNyVsQ" target="_blank">Handmade Hero Day 050 - Basic Minkowski-based Collision Detection</a>. Here is my resulting solution:</p>
+    <ol>
+        <li>Begin frame</li>
+        <li>Get ball's initial velocity based on player hits, drag, etc.</li>
+        <li>Sweep ball's circle collider along the travelling path using <a href="https://en.wikipedia.org/wiki/Minkowski_addition" target="_blank">Minkowski Addition</a></li>
+            <ul>
+                <li><a href="https://en.wikipedia.org/wiki/Dilation_(morphology)" target="_blank">Dialate</a> the walls and player's hitboxes by the ball's collider volume. Now, instead of being a swept-sphere shape, the ball's travel path becomes a line and the walls become rounded rectangles (see below). Doing collision detection with these shapes is easier to consider. You only have to do line detection against 4 lines and 4 circles for each wall (maybe it could be simpler).</li>
+            </ul>
+        <li>Detect earliest collision and progress time forward to that point</li>
+        <li>Resolve collision using reflection if it's a wall, or player system if it hit a player smacking</li>
+        <li>Go to step 2 and repeat until the ball's velocity is expired that frame</li>
+    </ol>
+    <p>Here's the game frozen in time as I synthetically move the ball:</p>
+    <img src="physics_animated.gif">
+    <p>The white line shows the ball's travel path over the course of 1 frame and the white circles show collisions against walls. The green lines show the dialated wall geometry the ball considers when detecting collisions. The end of the white line shows where it will end up 0.016ms from now (the ball would be going very fast). This solution worked well for us because we needed accurate collision detection and resolution. The ball could possibly bounce off hundreds of walls in 1 frame. If we had used a stepping algorithm, that might have been very slow and not sufficiently accurate.</p>
+
+    <h2>Graphics</h2>
+    <p>In Rush Park, everything is an alpha-blended, textured quad. This meant drawing could be done more efficiently with <a href="https://learnopengl.com/Advanced-OpenGL/Instancing" target="_blank">instancing</a>. I set this up by having everything in the engine draw by adding model information to the queue of models to draw. Then, before a frame draw, the rendering system would order the models by depth, mesh and texture, and draw the entire game using instanced lists. This significantly improved rendering performance, especially for our particle systems.</p>
 </div>
 
 
 
-
-
+<script> $(function(){ $("#common_footer").load("/common_footer.html"); }); </script>
+<div id="common_footer"></div>
 
 
 

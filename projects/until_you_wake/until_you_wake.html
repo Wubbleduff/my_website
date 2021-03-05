@@ -12,29 +12,14 @@
     <link rel="stylesheet" href="/style_common.css">
     <link rel="stylesheet" href="style.css">
 </head>
+<script src="/jquery-3.6.0.min.js"></script> 
 
 <body>
 
 <div class="grid">
 
-<header class="header">
-    <div>
-    </div>
-
-    <div class="name">
-        <a href="/index.html"><h1>Michael Fritz</h1><h2>Software Engineer</h2></a>
-    </div>
-
-    <div class="nav">
-        <ul>
-            <a href="/index.html" class="nav-leftmost"><li >Home</li></a>
-            <a href="/projects.html"><li>Projects</li></a>
-            <a href="/resume.html"><li>Resume</li></a>
-            <a href="/contact.html"><li>Contact</li></a>
-        </ul>
-    </div>
-</header>
-<hr>
+<script> $(function(){ $("#common_header").load("/common_header.html"); }); </script>
+<div id="common_header"></div>
 
 
 
@@ -47,7 +32,7 @@
     <h2>The Game</h2>
     <p>Until You Wake is a 3D 3rd-person action shooter game where the player plays a sentinel guarding their temple from enemies. The goddess has awoken the sentinel to take back the stolen sword from the demons. Using their bow and a bit of magic, the player will fight through hordes of crawlers and wisps, and finally defeat the leader of the demons!</p>
     <h2>The Team</h2>
-    <p>This game was developed by 15 people in total. There were 6 artists, 4 programmers, 4 designers, and 1 audio designer. </p>
+    <p>"Enooom" was a team of 15 people. There were 6 artists, 4 programmers, 4 designers, and 1 audio designer.</p>
     <h2>Development</h2>
     <p>Until You Wake was developed using Unity. This was my first time working with a team using a commercial game engine.</p>
     <h1>My Works</h1>
@@ -105,16 +90,8 @@
 
 <hr>
 
-<footer class="footer">
-<div>
-    <ul>
-        <li><a href="https://www.github.com/Wubbleduff" target="_blank"><img src="/github_icon.png">GitHub</a>
-            </li>
-        <li><a href="https://www.linkedin.com/in/michaelscottfritz/" target="_blank"><img src="/linkedin_icon.png">LinkedIn</a></li>
-        <li><a href="https://twitter.com/Wubbleduff" target="_blank"><img src="/twitter_icon.png">Twitter</a></li>
-    </ul>
-</div>
-</footer>
+<script> $(function(){ $("#common_footer").load("/common_footer.html"); }); </script>
+<div id="common_footer"></div>
 
 
 </div> <!-- class="grid" -->

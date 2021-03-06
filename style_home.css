@@ -33,6 +33,10 @@
     margin: 1em 0;
 }
 
+.recent-projects h2 {
+    font-size: 2rem;
+}
+
 .recent-projects h3 {
     margin: 1rem;
     font-size: 1.25rem;
@@ -44,7 +48,8 @@
 }
 
 .recent-projects-item {
-    margin: 0em 2em;
+    margin-top: 1em;
+    margin-bottom: 5em;
 }
 
 .recent-projects-item img {

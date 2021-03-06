@@ -3,6 +3,13 @@
     text-align: center;
 }
 
+iframe {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+}
+
 
 
 @media only screen and (max-width: 1300px) {

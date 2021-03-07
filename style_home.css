@@ -1,22 +1,24 @@
 
-#bio-block {
+.bio {
     margin: 5em 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
-.bio div {
-    margin: 0 16%;
+.bio-text {
+    margin-left: 0.75em;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
 }
 
 .bio img {
-    float: left;
-    margin-right: 1em;
-    width: 16em;
+    margin-right: 0.75em;
+    margin-left: auto;
 }
 
 .bio p {
-    margin: 0;
-    text-indent: 3em;
     font-size: 1.25rem;
+    vertical-align: middle;
 }
 
 .bio a:link {
@@ -25,57 +27,133 @@
 
 
 
-
-
-.recent-projects {
+.section {
     text-align: center;
     position: relative;
-    margin: 1em 0;
+    margin: 5em 0;
 }
 
-.recent-projects h2 {
+.section h2 {
     font-size: 2rem;
+    margin-top: 0;
 }
 
-.recent-projects h3 {
+.section h3 {
     margin: 1rem;
     font-size: 1.25rem;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.recent-projects-list {
+.section h4 {
+    margin: 0.5rem;
+}
+
+.section ul {
+    width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+
+
+
+.section-list-professional-experience {
     display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+
+
+.section-list-recent-projects {
+    display: grid;
+    grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr 1fr;
 }
 
-.recent-projects-item {
-    margin-top: 1em;
-    margin-bottom: 5em;
+
+
+.section-list-education {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
-
-.recent-projects-item img {
-}
-
-
 
 
 
 @media only screen and (max-width: 1300px) {
-    .bio div {
-        font-size: 0.75em;
-        margin: 0 16%;
+
+    .bio {
+        margin: 5em 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+
+    .bio-text {
+        display: block;
+        font-size: 1rem;
+        text-align: center;
+        margin-top: 1em;
     }
 
     .bio img {
-        float: unset;
-        display: block;
-        margin-left: auto;
         margin-right: auto;
-        margin-bottom: 1em;
+        margin-left: auto;
     }
 
 
-    .recent-projects h3 {
-        margin: 1rem;
-        font-size: 0.6rem;
+
+    .section-item:first-of-type {
+        margin-top: 0em;
+    }
+
+    .section-item {
+        margin-top: 5em;
+    }
+
+    .section h2 {
+        font-size: 4rem;
+    }
+
+    .section h3 {
+        font-size: 3rem;
+    }
+
+    .section ul {
+        width: 60%;
+    }
+
+    .section li {
+        font-size: 2.5rem;
+    }
+
+
+
+    .section-list-professional-experience {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+
+    .section-list-recent-projects {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+
+    .section-list-recent-projects .section-item img {
+        width: 50%;
+    }
+
+    .section-list-recent-projects .section-item ul {
+        width: 40%;
+    }
+
+    .section-list-education {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
     }
 }

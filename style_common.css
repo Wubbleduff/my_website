@@ -93,6 +93,26 @@ img {
     text-decoration: none;
 }
 
+
+
+.footer ul {
+    list-style-type: none;
+    text-align: center;
+}
+
+.footer li {
+    display: inline;
+    margin: 0 1em;
+}
+
+.footer img {
+    display: inline;
+    vertical-align: middle;
+    margin-right: 0.2rem;
+}
+
+
+
 @media only screen and (max-width: 1300px) {
     .grid {
         margin: 1em 2em;
@@ -124,23 +144,14 @@ img {
     .nav li {
         font-size: 2rem;
     }
-}
 
 
 
+    .footer li {
+        font-size: 1.5rem;
+    }
 
-.footer ul {
-    list-style-type: none;
-    text-align: center;
-}
-
-.footer li {
-    display: inline;
-    margin: 0 1em;
-}
-
-.footer img {
-    display: inline;
-    vertical-align: middle;
-    margin-right: 0.2rem;
+    .footer img {
+        width: 2em;
+    }
 }

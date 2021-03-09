@@ -18,12 +18,23 @@
     margin: 0em 2em;
 }
 
+.projects-item ul {
+    text-align: left;
+    width: 256px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .projects-item img {
 }
 
 
 
 @media only screen and (max-width: 1300px) {
+    .projects h2 {
+        font-size: 4rem;
+    }
+
     .projects-list {
         display: grid;
         grid-template-columns: unset;

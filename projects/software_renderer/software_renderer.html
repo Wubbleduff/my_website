@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Michael Fritz">
+    <meta name="description" content="Portfolio website for Michael Fritz">
+    <title>Michael Fritz - Software Renderer</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/style_common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<script src="/jquery-3.6.0.min.js"></script> 
+
+<body>
+
+<div class="grid">
+
+
+<script> $(function(){ $("#common_header").load("/common_header.html"); }); </script>
+<div id="common_header"></div>
+
+
+<div class="description">
+    <img src="software_renderer.png" id="subject-image">
+    <h1>Software Renderer</h1>
+    <h2>The Project</h2>
+    <p>As practice for graphics programming, I created a software renderer from scratch. I implemented the entire graphics pipeline in C/C++ using only the Windows API to blit a bitmap to a window.</p>
+    <p>I took screenshots along the way, so I'll present this like a slideshow of progress.</p>
+    <img src="ortho_projection_5_20_2019.png">
+    <p>The first the I did was write code to rasterize a triangle then a list of triangles. This was quick because I had already written a triangle rasterizer for CS250 (Graphics II).</p>
+    <p>To draw the head, I read in a .obj, created a list of triangles to render, orthographically projected them to screen space, and rasterized each triangle. To rasterize each triangle: create a bounding box containing the triangle, iterate through each pixel in the bounding box, and check if the pixel is within the triangle using the triangle's 3 plane equations. Later, this method would be useful with parallel code. Also, the point-plane equations can be computed incrementally. The calculations from the previous pixel can be reused to check if the current pixel is within the plane's bounds. Pixels then only need to do an addition and 3 bounds checks.</p>
+    <p>Line mode rasterization for debugging.</p>
+    <img src="line_mode_rasterize_bug_debug_7_7_2019.png">
+    <p>The next step is to move to perspective projection. At first, there were issues trying to figure out the matrix math. But, after doing research and working it out on pencil and paper, I finally got it right.</p>
+    <img src="persp_fixed_5_21_2019.png">
+    <p>Next, triangle clipping needed to work for correctness and efficiency. This was done using ideas from the <a href="https://www.geeksforgeeks.org/polygon-clipping-sutherland-hodgman-algorithm-please-change-bmp-images-jpeg-png/" target="_blank">Sutherland-Hodgman Algorithm.</a> Triangles are transformed to clip space, each triangle is clipped against each camera frustum plane, then projected to NDC space with the perspective division.</p>
+    <p>An issue here is picking a good epsilon value to use when clipping the triangles. Due to floating-point imprecision, you can't clip a triangle exactly on the plane value. Thus, you need to make sure it's clipped just before the plane (less than 1 pixel's distance). Also, this distance needs to be consistent acroos all triangles and planes or else you might get triangles not lined up.</p>
+    <img src="rasterizing_bug_7_7_2019.png">
+    <p>As shown here, the background is bleeding through the model because clipped triangles aren't consistent. This is due to an epsilon value being chosen as a percentage of line distance rather than a constant distance away from the plane.</p>
+    <p>Here's the bug when solved. There are now no spots bleeding through the model!</p>
+    <img src="rasterizing_bug_solved_7_7_2019.png">
+    <p>Here's clipping done with all triangles in the model.</p>
+    <img src="clipping_6_11_2019.png">
+    <p>Here's lighting introduced to the scene. This is just diffuse lighting using average normals computed on each vertex.</p>
+    <img src="clipping_lighting_normals_6_12_2019.png">
+    <p>A higher poly mesh!</p>
+    <img src="high_poly_mesh_6_12_2019.png">
+<hr>
+
+
+
+
+
+<script> $(function(){ $("#common_footer").load("/common_footer.html"); }); </script>
+<div id="common_footer"></div>
+
+</div> <!-- class="grid" -->
+</body>
+
+
+
+</html>
+

@@ -83,6 +83,12 @@
 
 
 
+.section-list-recent-projects .section-item ul {
+    width: 256px;
+}
+
+
+
 @media only screen and (max-width: 1300px) {
 
     .bio {

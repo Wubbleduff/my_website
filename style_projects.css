@@ -48,6 +48,14 @@
         font-size: 2rem;
     }
 
+    .projects-item ul {
+        width: 50%;
+    }
+
+    .projects-item li {
+        font-size: 2rem;
+    }
+
     .projects-item img {
         width: 50%;
     }

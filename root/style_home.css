@@ -92,10 +92,8 @@
 @media only screen and (max-width: 1300px) {
 
     .bio {
+        display: block;
         margin: 5em 0;
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 1fr;
     }
 
     .bio-text {
@@ -106,8 +104,11 @@
     }
 
     .bio img {
+        display: block;
         margin-right: auto;
         margin-left: auto;
+        margin-top: 1em;
+        width: 50%;
     }
 
 

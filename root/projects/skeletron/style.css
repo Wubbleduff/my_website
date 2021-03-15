@@ -8,5 +8,19 @@
 
 #game-title {
     text-align: center;
+    margin-top: 0.5em;
+}
+
+
+
+.description h2 {
+    font-size: 2rem;
+    margin-top: 2em;
+    margin-bottom: 0.25em;
+}
+
+.description h1 {
+    font-size: 3rem;
+    margin-top: 3em;
 }
 

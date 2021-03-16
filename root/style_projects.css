@@ -5,7 +5,12 @@
 }
 
 .projects h2 {
-    font-size: 2rem;
+    font-size: 2.5rem;
+}
+
+.projects h4 {
+    font-style: italic;
+    font-size: 1rem;
 }
 
 .projects-list {
@@ -33,6 +38,10 @@
 @media only screen and (max-width: 1300px) {
     .projects h2 {
         font-size: 4rem;
+    }
+
+    .projects h4 {
+        font-size: 0.75rem;
     }
 
     .projects-list {
